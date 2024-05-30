@@ -15,7 +15,33 @@ _Hint, search type 1 vs type 2 slowly changing dimensions._
 
 Bonus: Are there privacy implications to this, why or why not?
 ```
-Your answer...
+Proposed architecture 1 – This one is to overwrite changes and is therefore Type 1 SCD. This means that whenever a customer’s address gets updated, the old address gets overwritten by the new address and the table always contains the current address for a particular customer. 
+
+Changes to the existing ERD: Customer table will have a field called address_id instead of customer_address and will have a many to one relationship to the address-id field in the new table Address. There is a last_updated field to keep track of when the address was last modified.
+
+New_Table: Address
+Columns: Address_id
+         Street
+         City
+         State
+         Postal_code
+         Last_updated 
+
+Proposed architecture 2 – This one is to retain changes and is therefore Type 2 SCD. This means that whenever a customer’s address changes, the old address(es) are retained, and a new row gets added to store the new address for a particular customer.
+
+Changes to the existing ERD: Customer table will have a field called address_id instead of customer_address and will have a many to one relationship to the address-id field in the new table Address. Instead of the last_updated field, there is a is_current field to keep track of the current address.
+
+New_Table: Address
+Columns: Address_id
+         Street
+         City
+         State
+         Postal_code
+         Is_current
+
+Privacy implications – Type 1 minimizes the amount of personal information stored which is good for privacy as it reduces the risk of exposure in the event of a data breach. But it does not provide a history of address changes, which can be required for legal compliance. On the other hand, Type 2 stores a complete history of addresses for every customer, which is good for compliance purposes. But it requires more storage and increases the amount of personal information stored, thereby increasing privacy risks. So, there is a trade-off between more information and privacy risks.
+
+
 ```
 
 ## Question 4
@@ -23,8 +49,19 @@ Review the AdventureWorks Schema [here](https://i.stack.imgur.com/LMu4W.gif)
 
 Highlight at least two differences between it and your ERD. Would you change anything in yours?
 ```
-Your answer...
-```
+
+AdventureWorks uses best practices in database design, namely segmentation and normalization, to create a robust and detailed schema.
+
+2 differences – 
+Segmentation: AdventureWorks ERD is divided into multiple schemas, Sales, Purchasing, Person, Production, HumanResources, and dbo, which helps organize the database logically. Bookstore ERD is more simplified in nature and consists of a single schema probably because AdventureWorks is a much bigger application than what has been envisaged for Bookstore. 
+
+Normalization: AdventureWorks ERD is highly normalized, seems like 3NF to me. Bookstore ERD uses a moderate level of normalization, 2NF to a large degree but not fully compliant.  
+
+Changes to the proposed Bookstore ERD
+With more time and information, I would like to make the Bookstore ERD as segmented and detailed as AdventureWorks with complex relationships rather than the simple relationships as proposed in the Bookstore ERD. Similarly, I would make changes to the Bookstore ERD to ensure that it complies with 3NF to eliminate redundancy. 
+
+
+
 
 # Criteria
 
